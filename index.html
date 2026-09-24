@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SUS WS ERP</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Blocks any flash of the wrong screen while session is being checked -->
+<div id="full-loading">Loading SUS WS ERP…</div>
+
+<!-- ================= LOGIN ================= -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 40 40"><rect width="40" height="40" rx="8" fill="#007979"/><path d="M10 26 L20 12 L30 26 Z" fill="#89D7B7"/><rect x="16" y="24" width="8" height="8" fill="#FFFFFF"/></svg>
+      <h1>SUS WS ERP</h1>
+    </div>
+    <form id="login-form">
+      <div class="field">
+        <label for="login-userid">User ID</label>
+        <input id="login-userid" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" autocomplete="current-password" required>
+      </div>
+      <div id="login-error"></div>
+      <button type="submit" class="btn-primary" style="width:100%;margin-top:6px;">Log in</button>
+    </form>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app-screen">
+  <div class="topbar">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 40 40"><rect width="40" height="40" rx="8" fill="#24B1B1"/><path d="M10 26 L20 12 L30 26 Z" fill="#1A312C"/><rect x="16" y="24" width="8" height="8" fill="#FFFFFF"/></svg>
+      <strong>SUS WS ERP</strong>
+    </div>
+    <div class="who">
+      <span id="who-name"></span>
+      <span id="who-role" class="role-pill"></span>
+      <button class="btn-secondary" id="logout-btn">Log out</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar" id="sidebar"></div>
+
+    <div class="content">
+
+      <!-- USER: New Request -->
+      <div class="panel" id="panel-newrequest">
+        <h2>New request</h2>
+        <div class="card">
+          <p class="muted">Describe each item in plain text — no need to match the product catalog. The supplier will match it to an actual product when supplying.</p>
+          <div id="request-lines"></div>
+          <button type="button" class="btn-ghost" id="add-line-btn">+ Add another item</button>
+          <div style="margin-top:14px;">
+            <button type="button" class="btn-primary" id="submit-request-btn">Submit request</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- USER: My Requests -->
+      <div class="panel" id="panel-myrequests">
+        <h2>My requests</h2>
+        <div class="toolbar">
+          <span class="spacer"></span>
+          <button class="btn-secondary" data-refresh="myrequests">Refresh</button>
+        </div>
+        <div class="table-wrap"><table id="table-myrequests"><thead></thead><tbody></tbody></table></div>
+        <div id="load-more-row"><button class="btn-secondary" data-loadmore="myrequests">Load 10 more</button></div>
+      </div>
+
+      <!-- USER: Verify & Receive -->
+      <div class="panel" id="panel-verify">
+        <h2>Verify &amp; receive</h2>
+        <p class="muted">Lines your supplier has supplied, awaiting your verification and receipt.</p>
+        <div class="table-wrap"><table id="table-verify"><thead></thead><tbody></tbody></table></div>
+        <div id="load-more-verify" style="text-align:center;padding:14px 0;"><button class="btn-secondary" data-loadmore="verify">Load 10 more</button></div>
+      </div>
+
+      <!-- USER: Return to Supplier -->
+      <div class="panel" id="panel-return">
+        <h2>Return to supplier</h2>
+        <p class="muted">Received lines with rejected/excess quantity you can return.</p>
+        <div class="table-wrap"><table id="table-return"><thead></thead><tbody></tbody></table></div>
+        <div style="text-align:center;padding:14px 0;"><button class="btn-secondary" data-loadmore="return">Load 10 more</button></div>
+      </div>
+
+      <!-- SUPPLIER: Pending Supply -->
+      <div class="panel" id="panel-supply-pending">
+        <h2>Pending supply</h2>
+        <div class="table-wrap"><table id="table-supply-pending"><thead></thead><tbody></tbody></table></div>
+        <div style="text-align:center;padding:14px 0;"><button class="btn-secondary" data-loadmore="supply-pending">Load 10 more</button></div>
+      </div>
+
+      <!-- SUPPLIER: My Supplies -->
+      <div class="panel" id="panel-supply-mine">
+        <h2>My supplies</h2>
+        <div class="table-wrap"><table id="table-supply-mine"><thead></thead><tbody></tbody></table></div>
+        <div style="text-align:center;padding:14px 0;"><button class="btn-secondary" data-loadmore="supply-mine">Load 10 more</button></div>
+      </div>
+
+      <!-- SUPPLIER: Confirm Returns -->
+      <div class="panel" id="panel-supply-returns">
+        <h2>Confirm returns received</h2>
+        <div class="table-wrap"><table id="table-supply-returns"><thead></thead><tbody></tbody></table></div>
+        <div style="text-align:center;padding:14px 0;"><button class="btn-secondary" data-loadmore="supply-returns">Load 10 more</button></div>
+      </div>
+
+      <!-- ADMIN: All Entries -->
+      <div class="panel" id="panel-admin-all">
+        <h2>All entries</h2>
+        <div class="table-wrap"><table id="table-admin-all"><thead></thead><tbody></tbody></table></div>
+        <div style="text-align:center;padding:14px 0;"><button class="btn-secondary" data-loadmore="admin-all">Load 10 more</button></div>
+      </div>
+
+      <!-- ADMIN: Product Master -->
+      <div class="panel" id="panel-admin-products">
+        <h2>Product master</h2>
+        <div class="card">
+          <div class="toolbar">
+            <input id="product-search" placeholder="Search product / brand" style="max-width:240px;">
+            <button class="btn-secondary" id="product-search-btn">Search</button>
+            <span class="spacer"></span>
+            <button class="btn-primary" id="new-product-btn">+ New product</button>
+          </div>
+        </div>
+        <div class="table-wrap"><table id="table-products"><thead></thead><tbody></tbody></table></div>
+        <div style="text-align:center;padding:14px 0;"><button class="btn-secondary" data-loadmore="products">Load 10 more</button></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal" id="modal-body"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
